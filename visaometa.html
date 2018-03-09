@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+  //recupera URL  
+  var url_atual = window.location.href;
+  var url_string = url_atual; //window.location.href
+  var url = new URL(url_string);
+
+    //recupera cliente e valores
+    var cliente = url.searchParams.get("cliente");
+    var pecareal = parseInt(url.searchParams.get("pecareal"));
+    var pecaplan = parseInt(url.searchParams.get("pecaplan"));
+
+
+    var pneureal = parseInt(url.searchParams.get("pneureal"));
+    var pneuplan = parseInt(url.searchParams.get("pneuplan"));
+
+
+    var visitareal = parseInt(url.searchParams.get("visitareal"));
+    var visitaplan = parseInt(url.searchParams.get("visitaplan"));
+
+  // fim recupera
+
+  //
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(pecas);
+      function pecas() {
+        //converter valor para string
+        var pecareals = pecareal.toString();
+        var pecaplans = pecaplan.toString();
+        //regra valida valores e calcula o total
+        var total = pecaplan - pecareal;
+        if (pecareal > pecaplan) {
+          total =0;
+
+        }
+
+
+        //Api do Google
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Realizado: '+pecareals,     pecareal],
+          ['Planejado: '+pecaplans  ,      total]
+        ]);
+
+        var options = {
+          title: 'Meta de faturamento de peças',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('pecas'));
+        chart.draw(data, options);
+      }
+
+
+
+      google.charts.setOnLoadCallback(pneus);
+      function pneus() {
+        //converter valor para string
+        var pneureals = pneureal.toString();
+        var pneuplans = pneuplan.toString();
+
+        //regra valida valores e calcula o total
+        var total = pneuplan - pneureal;
+        if (pneureal > pneuplan) {
+          total =0;
+
+        }        
+        //Api do Google
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Realizado: '+pneureals,     pneureal],
+          ['Planejado: '+pneuplans,      total]
+        ]);
+
+        var options = {
+          title: 'Meta de faturamento de pneus',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('pneus'));
+        chart.draw(data, options);
+      }   
+
+
+      google.charts.setOnLoadCallback(visita);
+      function visita() {
+        //converter valor para string
+        var visitareals = visitareal.toString();
+        var visitaplans = visitaplan.toString();
+
+        //regra valida valores e calcula o total
+        var total = visitaplan - visitareal;
+        if (visitareal > visitaplan) {
+          total =0;
+
+        }
+        //Api do Google
+        var data = google.visualization.arrayToDataTable([
+          ['Tarefa', 'Visitas do mês'],
+          ['Realizado: '+visitareals,     visitareal],
+          ['Planejado: '+visitaplans,      total]
+        ]);
+
+        var options = {
+          title: 'Meta de visita',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('visita'));
+        chart.draw(data, options);
+      }     
+    </script>
+  </head>
+  <body>
+  <div id="principal">
+    <div id="pecas" style="width: 380px; height: 300px;float: left;"> </div>
+    <div id="pneus" style="width: 380px; height: 300px;  float: left;"> </div>
+    <div id="visita" style="width: 380px; height: 300px;  float: left;"> </div>
+  </div>
+  </body>
+</html>
